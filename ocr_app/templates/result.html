@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h1>Bangla OCR</h1>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if status == "DOCX_GENERATED" %}
+    <p class="status-message status-success">✅ Your document is ready!</p>
+    <div class="button-group">
+      <a class="download-btn" href="{{ download_url }}" download>Download DOCX</a>
+      <a href="{% url 'upload_file' %}" class="try-again-btn">Upload Another File</a>
+    </div>
+  {% elif status == "UPLOADED" or status == "IMAGE_EXTRACTED" %}
+    <p class="status-message status-processing">⏳ OCR processing is in progress...</p>
+    <p class="status-detail">Status: <strong>{{ status }}</strong></p>
+    <meta http-equiv="refresh" content="5">
+  {% else %}
+    <p class="status-message status-unknown">⚠️ Unknown status: {{ status }}</p>
+  {% endif %}
+</div>
+{% endblock %}
